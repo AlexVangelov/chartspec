@@ -52,9 +52,9 @@ module Chartspec
         :pending_count => summary.pending_count
       }
       @output_hash[:summary_line] = summary.totals_line
-      
+
       specs_history = [].tap do |cd|
-        @db.all do |row|
+        @db.all.each do |row|
           cd << {
             file: row[0],
             name: row[1], 
@@ -73,7 +73,6 @@ module Chartspec
           spec_summary[name] = measures
         end
       end
-      p specs_history
   
       @chartspec_root = File.expand_path("../../../", __FILE__)
       template = ERB.new File.new(File.expand_path("../../../templates/chartspec.html.erb", __FILE__)).read, nil, "%"
@@ -87,7 +86,7 @@ module Chartspec
       File.open(@chart_file, "w") do |file|
         file.puts template.result(binding)
       end
-      puts "* Chartspec output: #{output.inspect}\n"
+      puts "* Chartspec output: #{@chart_file}\n"
       puts "* Chartspec tmp_db: #{@db.file_name}\n"
     end
     

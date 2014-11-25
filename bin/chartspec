@@ -3,4 +3,5 @@
 require 'rspec'
 require 'chartspec'
 
-RSpec::Core::Runner::run ARGV + ["--format", "Chartspec::Formatter", "--out", ENV["CHARTSPEC_HTML"] || "tmp/chartspec.html"]
+#RSpec::Core::Runner::run ARGV + ["--format", "Chartspec::Formatter", "--out", ENV["CHARTSPEC_HTML"] || "tmp/chartspec.html"]
+RSpec::Core::Runner::run ARGV + ["--format", "Chartspec::Formatter"]
