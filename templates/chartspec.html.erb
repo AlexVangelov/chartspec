@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= @title %></title>
+    <style>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/stylesheets/jquery.jqplot.min.css")).read %>
+    </style>
+    <!--[if lt IE 9]><script language='javascript' type='text/javascript' src='http://www.jqplot.com/src/excanvas.js'></script><![endif]-->
+  </head>
+  <body>
+    <h1><%= @name %></h1>
+    <div id='chartdiv' style='height:400px;width:100%;'></div>
+    <h3><%= @output_hash[:summary_line] %></h3>
+    <% @output_hash[:examples].each do |test| %>
+      <% if  test[:status] == 'passed' %>
+        <b style='color:green;'>[&nbsp;OK&nbsp;]</b> <%= test[:full_description] %> / <%= test[:run_time] %>
+      <% else %>
+        <b style='color:red;'>[FAIL]</b> <%= test[:full_description] %> / <%= test[:run_time] %>
+        <blockquote>
+          <b><%= test[:exception][:class] %></b><br />
+          <span style="color:red;"><%= test[:exception][:message] %></span><br />
+          <%= test[:exception][:backtrace].join('<br />') %>
+        </blockquote>
+      <% end %>
+      <br />
+    <% end %>
+    <script>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jquery.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jquery.jqplot.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot.dateAxisRenderer.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot.highlighter.min.js")).read %>
+      $(document).ready(function(){
+        var chart_data = <%= (@chart_data || {}).values.to_json %>;
+        var chart = $.jqplot('chartdiv', chart_data, 
+          { 
+            title: '<%= "#{@title} / #{Time.now.strftime("%b %d %T")}" %>',
+            axes:{
+              xaxis:{
+                renderer:$.jqplot.DateAxisRenderer,
+                tickOptions:{
+                  formatString:'%b&nbsp;%#d %T'
+                } 
+              },
+              yaxis:{
+                tickOptions:{
+                  formatString:'%.3f'
+                }
+              }
+            },
+            highlighter: {
+              show: true,
+              sizeAdjust: 7.5
+            },
+            legend: {
+              location: 'nw',
+              labels: <%= (@chart_data || {}).keys.to_json %>,
+              show: true,
+              placement: 'insideGrid'
+            }
+          }
+        ); 
+      });
+    </script>
+  </body>
+</html>
+
