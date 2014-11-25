@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%= @title %></title>
     <style>
-      <%= File.open(File.join(@chartspec_root,"vendor/assets/stylesheets/jquery.jqplot.min.css")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/stylesheets/jqplot/jquery.jqplot.min.css")).read %>
     </style>
     <!--[if lt IE 9]><script language='javascript' type='text/javascript' src='http://www.jqplot.com/src/excanvas.js'></script><![endif]-->
   </head>
@@ -26,10 +26,10 @@
       <br />
     <% end %>
     <script>
-      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jquery.min.js")).read %>
-      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jquery.jqplot.min.js")).read %>
-      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot.dateAxisRenderer.min.js")).read %>
-      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot.highlighter.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jquery/jquery.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot/jquery.jqplot.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot/jqplot.dateAxisRenderer.min.js")).read %>
+      <%= File.open(File.join(@chartspec_root,"vendor/assets/javascripts/jqplot/jqplot.highlighter.min.js")).read %>
       $(document).ready(function(){
         var chart_data = <%= (@chart_data || {}).values.to_json %>;
         var chart = $.jqplot('chartdiv', chart_data, 
