@@ -37,7 +37,7 @@ module Chartspec
               :backtrace => e.backtrace,
             }
           else
-            @db.add example.metadata[:file_path], example.full_description, example.execution_result.run_time
+            @db.add(example.metadata[:file_path], example.full_description, example.execution_result.run_time) if example.metadata[:chart]
           end
         end
       end
