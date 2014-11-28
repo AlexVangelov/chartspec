@@ -9,7 +9,6 @@
     <!-- Bootstrap -->
     <style>
       <%= File.open(File.join(@assets_path,"stylesheets/bootstrap/bootstrap.min.css")).read %>
-      <%= File.open(File.join(@assets_path,"stylesheets/bootstrap/bootstrap-theme.min.css")).read %>
       <%= File.open(File.join(@assets_path,"stylesheets/jqplot/jquery.jqplot.min.css")).read %>
       body {
         padding-top: 60px;
@@ -62,6 +61,13 @@
         );
         $(window).bind('resize', function(event, ui) {
             chart.replot( { resetAxes: true } );
+        });
+        
+        $(document).ready(function(){
+          $(".show_backtrace").click(function() {
+            $($(this).attr('href')).removeClass('hide');
+            $(this).hide();
+          });
         });
       }
     </script>

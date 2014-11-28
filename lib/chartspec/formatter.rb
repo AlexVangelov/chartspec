@@ -73,7 +73,7 @@ module Chartspec
       unless @header_red
         @header_red = true
       end
-      @printer.print_example_failed(failure.example.metadata[:file_path], failure.example.description, failure.example.execution_result.run_time,
+      @printer.print_example_failed(@example_number, failure.example.metadata[:file_path], failure.example.description, failure.example.execution_result.run_time,
         failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:turnip])
     end
     

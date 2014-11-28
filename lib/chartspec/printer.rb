@@ -50,7 +50,7 @@ module Chartspec
       @output.puts "</b></div></div>"
     end
     
-    def print_example_failed(filepath, description, run_time, error, backtrace, turnip = nil)
+    def print_example_failed(example_id, filepath, description, run_time, error, backtrace, turnip = nil)
       formatted_run_time = "%.5f" % run_time
       @output.puts "<div><div class='pull-right'>#{formatted_run_time}s</div><div class='bg-danger' style='border-bottom: 1px dotted #cccccc;'>&nbsp;!&nbsp; <b class='text-danger'>"
       if turnip
@@ -70,11 +70,11 @@ module Chartspec
         end
         @output.puts "</table>"
       else
-        @output.puts description
+        @output.puts h(description)
       end
-      @output.puts "</b></div><blockquote class='small'><div class='text-danger'>#{error}</div><a link_to='#'>Show backtrace</a><small class='hide'>"
+      @output.puts "</b></div><blockquote class='small'><div class='text-danger'>#{error}</div><a href='#backtrace_#{example_id}' class='show_backtrace'>Show backtrace</a><small id='backtrace_#{example_id}' class='hide'>"
         backtrace.each do |btl|
-          @output.puts "#{btl}<br />"
+          @output.puts "#{h btl}<br />"
         end
       @output.puts "</small></blockquote>"
     end
@@ -88,7 +88,7 @@ module Chartspec
         end
         @output.puts "</table>"
       else
-        @output.puts description
+        @output.puts h(description)
       end
       @output.puts "</b></div></div>"
     end
