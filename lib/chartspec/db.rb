@@ -9,17 +9,19 @@ module Chartspec
         FileUtils.mkdir_p(db_dirname)
       end
       @db = SQLite3::Database.new @db_file
-      @db.execute( "CREATE TABLE IF NOT EXISTS specs(id INTEGER PRIMARY KEY, file TEXT, name TEXT, duration NUMERIC, measured_at DATETIME);" )
+      @db.execute( "CREATE TABLE IF NOT EXISTS specs(id INTEGER PRIMARY KEY, file TEXT, chart TEXT, name TEXT, duration NUMERIC, measured_at DATETIME);" )
     end
     
-    def add(file, name, duration, measured_at = Time.now.to_i)
-      @db.execute("INSERT INTO specs(file, name, duration, measured_at) VALUES (?, ?, ?, ?)", [
-        file, name, duration, measured_at
+    def add(file, chart, name, duration, measured_at = Time.now.to_i)
+      @db.execute("INSERT INTO specs(file, chart, name, duration, measured_at) VALUES (?, ?, ?, ?, ?)", [
+        file, chart.to_s, name, duration, measured_at
       ]) 
     end
     
-    def all
-      @db.execute( "select file, name, duration, measured_at from specs where measured_at > ?", (Time.now - ((ENV['CHARTSPEC_HISTORY_HOURS'] || 2)*3600)).to_i)
+    def select_by_file_and_chart(file, chart)
+      @db.execute( "select name, duration, measured_at from specs where file = ? and chart = ? and measured_at > ?", [
+        file, chart.to_s, (Time.now - ((ENV['CHARTSPEC_HISTORY_HOURS'] || 8)*3600)).to_i
+      ])
     end
     
     def file_name
