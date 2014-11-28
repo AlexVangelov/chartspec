@@ -1,3 +1,5 @@
 require "chartspec/version"
 require "chartspec/formatter"
-requires"chartspec/ext/turnip/rspec" if defined? Turnip
+if Gem::Specification::find_all_by_name('turnip').any?
+  require "chartspec/ext/turnip/rspec"
+end

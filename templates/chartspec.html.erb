@@ -62,14 +62,13 @@
         $(window).bind('resize', function(event, ui) {
             chart.replot( { resetAxes: true } );
         });
-        
-        $(document).ready(function(){
-          $(".show_backtrace").click(function() {
-            $($(this).attr('href')).removeClass('hide');
-            $(this).hide();
-          });
-        });
       }
+      $(document).ready(function(){
+        $(".show_backtrace").click(function() {
+          $($(this).attr('href')).removeClass('hide');
+          $(this).hide();
+        });
+      });
     </script>
   </head>
   <body>

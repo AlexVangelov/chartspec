@@ -58,7 +58,7 @@ module Chartspec
   
     def example_passed(passed)
       putc RSpec::Core::Formatters::ConsoleCodes.wrap('.', :success)
-      @printer.print_example_passed(passed.example.description, passed.example.execution_result.run_time, passed.example.metadata[:turnip])
+      @printer.print_example_passed(passed.example.description, passed.example.execution_result.run_time, passed.example.metadata[:chartspec_turnip])
       @db.add(
         passed.example.metadata[:file_path], 
         passed.example.example_group, 
@@ -74,12 +74,12 @@ module Chartspec
         @header_red = true
       end
       @printer.print_example_failed(@example_number, failure.example.metadata[:file_path], failure.example.description, failure.example.execution_result.run_time,
-        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:turnip])
+        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:chartspec_turnip])
     end
     
     def example_pending(pending)
       putc RSpec::Core::Formatters::ConsoleCodes.wrap('*', :pending)
-      @printer.print_example_pending(pending.example.description, pending.example.execution_result.pending_message, pending.example.metadata[:turnip])
+      @printer.print_example_pending(pending.example.description, pending.example.execution_result.pending_message, pending.example.metadata[:chartspec_turnip])
     end
     
     def dump_failures(notification)

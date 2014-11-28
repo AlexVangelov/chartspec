@@ -29,7 +29,7 @@ module Turnip
           steps   = background_steps + scenario.steps
           tags    = (feature.tags + scenario.tags).uniq
 
-          example.metadata[:turnip] = { steps: steps, tags: tags }
+          example.metadata[:chartspec_turnip] = { steps: steps, tags: tags }
         end
       end
     end
