@@ -5,22 +5,23 @@ require 'turnip/rspec'
 module Turnip
   module RSpec
     class << self
-      alias_method :original_run, :run
+      alias_method :super_run, :run
 
       def run(feature_file)
-        features = original_run(feature_file)
+        features = super_run(feature_file)
         example_groups = ::RSpec.world.example_groups[-features.length..-1]
 
         features.zip(example_groups).each do |feature, example_group|
-          update_metadata(feature, example_group)
+          add_steps_to_metadata(feature, example_group)
         end
+        features
       end
 
       #
       # @param  [Turnip::Builder::Feature]   feature
       # @param  [RSpec::Core::ExampleGroup]  example_group
       #
-      def update_metadata(feature, example_group)
+      def add_steps_to_metadata(feature, example_group)
         background_steps = feature.backgrounds.map(&:steps).flatten
         examples = example_group.children
 
