@@ -10,6 +10,7 @@ module Chartspec
     end
     
     def print_html_start
+      @title = ENV['CHARTSPEC_TITLE'] || 'Chartspec'
       chartspec_header = ERB.new File.new(File.expand_path("../../../templates/chartspec.html.erb", __FILE__)).read
       @output.puts chartspec_header.result(binding)
     end
@@ -27,7 +28,7 @@ module Chartspec
       parents_count.times do 
         @output.puts "<span class='media-left'>&nbsp;</span>"
       end
-      @output.puts "<div class='media-body' style='width:100%;'><h4 class='media-heading'>#{title}</h4>"
+      @output.puts "<div class='media-body' style='width:100%;padding-bottom: 15px;'><h4 class='media-heading'>#{title}</h4>"
       @output.puts "<div class='thumbnail hide'><div id='chart_#{group_id}' data-chart='#{chart}' style='height:100px; width:100%;'></div></div>"
     end
     
@@ -35,9 +36,12 @@ module Chartspec
       @output.puts "</div></li></ul>"
     end
     
-    def print_example_passed(description, run_time, turnip = nil)
+    def print_example_passed(description, run_time, turnip = nil, video_path = nil)
       formatted_run_time = "%.5f" % run_time
       @output.puts "<div><div class='pull-right'>#{formatted_run_time}s</div><div class='text-success' style='border-bottom: 1px dotted #cccccc;'>&check; <b class='text-success'>"
+      if (video_path)
+        @output.puts " <button onclick=\"set_video('#{video_path}', '#{h(description)}'); $('#video').show().addClass('in')\" type='button' class='btn btn-warning btn-xs'>&#9658;</button>"
+      end
       if turnip
         @output.puts "<table class='table table-condensed'>"
         turnip[:steps].each do |step|
@@ -50,9 +54,12 @@ module Chartspec
       @output.puts "</b></div></div>"
     end
     
-    def print_example_failed(example_id, filepath, description, run_time, error, backtrace, turnip = nil)
+    def print_example_failed(example_id, filepath, description, run_time, error, backtrace, turnip = nil, video_file = nil)
       formatted_run_time = "%.5f" % run_time
       @output.puts "<div><div class='pull-right'>#{formatted_run_time}s</div><div class='bg-danger' style='border-bottom: 1px dotted #cccccc;'>&nbsp;!&nbsp; <b class='text-danger'>"
+      if (video_path)
+        @output.puts " <button onclick=\"set_video('#{video_path}', '#{h(description)}'); $('#video').show().addClass('in')\" type='button' class='btn btn-warning btn-xs'>&#9658;</button>"
+      end
       if turnip
         line = backtrace.find do |bt|
           bt.match(/#{filepath}:(\d+)/)

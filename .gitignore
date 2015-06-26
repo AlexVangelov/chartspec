@@ -14,3 +14,4 @@
 mkmf.log
 .project
 pkg
+Gemfile.lock

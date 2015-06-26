@@ -7,7 +7,7 @@ require 'json'
 
 module Chartspec
   class Formatter < RSpec::Core::Formatters::BaseTextFormatter
-    RSpec::Core::Formatters.register self, :start, :example_group_started, :start_dump, :example_started, :example_passed, :example_failed, :example_pending, :dump_failures, :dump_pending
+    RSpec::Core::Formatters.register self, :start, :example_group_started, :start_dump, :example_started, :example_passed, :example_failed, :example_pending, :dump_failures, :dump_pending, :message
     
     def initialize(output)
       super output
@@ -58,7 +58,7 @@ module Chartspec
   
     def example_passed(passed)
       putc RSpec::Core::Formatters::ConsoleCodes.wrap('.', :success)
-      @printer.print_example_passed(passed.example.description, passed.example.execution_result.run_time, passed.example.metadata[:chartspec_turnip])
+      @printer.print_example_passed(passed.example.description, passed.example.execution_result.run_time, passed.example.metadata[:chartspec_turnip], video_path(passed.example))
       @db.add(
         passed.example.metadata[:file_path], 
         passed.example.example_group, 
@@ -74,7 +74,7 @@ module Chartspec
         @header_red = true
       end
       @printer.print_example_failed(@example_number, failure.example.metadata[:file_path], failure.example.description, failure.example.execution_result.run_time,
-        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:chartspec_turnip])
+        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:chartspec_turnip], video_path(passed.example))
     end
     
     def example_pending(pending)
@@ -90,6 +90,10 @@ module Chartspec
     def dump_pending(notification)
       return if notification.pending_examples.empty?
       puts notification.fully_formatted_pending_examples
+    end
+    
+    def message(notification = nil)
+      puts notification.message
     end
     
     private
@@ -121,6 +125,10 @@ module Chartspec
           end
         end
         @printer.print_chart_script(example_file, example_group, chart_data) unless chart_data.empty?
+      end
+      
+      def video_path(example)
+        return File.basename(example.metadata[:video_path])
       end
   end
 end
