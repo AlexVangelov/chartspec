@@ -74,7 +74,7 @@ module Chartspec
         @header_red = true
       end
       @printer.print_example_failed(@example_number, failure.example.metadata[:file_path], failure.example.description, failure.example.execution_result.run_time,
-        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:chartspec_turnip], video_path(passed.example))
+        failure.example.exception.message, failure.example.exception.backtrace, failure.example.metadata[:chartspec_turnip], video_path(failure.example))
     end
     
     def example_pending(pending)
@@ -128,7 +128,7 @@ module Chartspec
       end
       
       def video_path(example)
-        return File.basename(example.metadata[:video_path])
+        return File.basename(example.metadata[:video_path]) if example.metadata[:video_path]
       end
   end
 end

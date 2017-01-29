@@ -54,7 +54,7 @@ module Chartspec
       @output.puts "</b></div></div>"
     end
     
-    def print_example_failed(example_id, filepath, description, run_time, error, backtrace, turnip = nil, video_file = nil)
+    def print_example_failed(example_id, filepath, description, run_time, error, backtrace, turnip = nil, video_path = nil)
       formatted_run_time = "%.5f" % run_time
       @output.puts "<div><div class='pull-right'>#{formatted_run_time}s</div><div class='bg-danger' style='border-bottom: 1px dotted #cccccc;'>&nbsp;!&nbsp; <b class='text-danger'>"
       if (video_path)
